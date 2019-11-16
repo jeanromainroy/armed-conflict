@@ -1,0 +1,143 @@
+/***** General style *****/
+body {
+  font-family: Arial, sans-serif;
+  padding: 0;
+  margin:0;
+}
+
+.error {
+  color: #914141;
+}
+
+
+/***** Map *****/
+#map {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #eee;
+  z-index: -1;
+}
+
+path {
+  stroke: #333;
+  fill: none;
+}
+
+
+/***** Search bar *****/
+#search-bar {
+  position: absolute;
+  top: 10px;
+  left: 60px;
+  display: flex;
+  width: 400px;
+  max-width: 100%;
+  margin-top: 10px;
+}
+
+#search-bar > input {
+  line-height: 35px;
+  padding: 0 10px;
+  border: 1px solid #999;
+  flex: 1;
+  font-size: 11pt;
+}
+
+#search-bar > input:focus {
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075), 0 0 8px rgba(153, 153, 153, 0.6);
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.075), 0 0 8px rgba(153, 153, 153, 0.6);
+}
+
+#search-bar > button {
+  background-color: #4c7d95;
+  border: 1px solid #999;
+  border-left: 0;
+  outline: 0;
+  flex-basis: 40px;
+  cursor: pointer;
+}
+
+#search-bar > button:hover {
+  background-color: #2b4d5b;
+}
+
+#search-bar > button img {
+  height: 18px;
+}
+
+
+/***** Time track & Sliders *****/
+#timeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+
+#track {
+  position: relative;
+  background-color: #ddd;
+  border: 1px solid rgb(0, 0, 0);
+  width: 1000px; 
+  height: 25px;
+}
+
+#slider {
+  position: relative;
+  background-color: rgba(255,255,255,1);
+  border: 1px solid rgb(0, 0, 0);
+  cursor: pointer;
+  width: 15px; 
+  height: 45px;
+  margin-top: -40px;
+}
+
+#slider p{
+  position: relative;
+  top: 36px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  left: -44px;
+  width: 100px;
+}
+
+#track .axis {
+  shape-rendering: crispEdges;
+  font-size: 12px;
+}
+
+#track .axis line {
+  display: block;
+}
+
+#track .axis path {
+  display: none;
+}
+
+
+/***** Tooltip *****/
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  border-radius: 4px;
+  color: #fff;
+  background: rgba(36, 36, 36, 1);
+  font-size: 14px;
+}
+
+.d3-tip h2{
+  font-size: 18px;
+}
+
+.d3-tip p{
+  font-size: 14px;
+}
