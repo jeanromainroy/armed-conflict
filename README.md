@@ -1,6 +1,8 @@
 # African Armed Conflicts: Visualization & Forecasting
 
-Predicting Interstate and Internal Conflicts using Small Arms Transfers, Defense Spending, etc. We use a time-series framework to tackle the problem.
+Predicting Interstate and Internal Conflicts using Small & Medium Arms Imports, Military Expenditures, Fraction of Population in the Army, etc. We use a time-series framework to tackle the problem.
+
+![Screenshot](screenshot.png)
 
 [Link to interactive map](http://jeanromainroy.com/dataviz_election_2016.html)
 
@@ -13,9 +15,6 @@ Let's first look at all the files in the repo
 	.
 	├── analysis
 	│   ├── data
-	│   │   ├── dataviz
-	│   │   │   ├── arms_imports.json
-	│   │   │   └── country_codes.json
 	│   │   ├── nisat
 	│   │   │   ├── resources
 	│   │   │   │   ├── NISAT database public user manual.pdf
@@ -25,13 +24,34 @@ Let's first look at all the files in the repo
 	│   │   │   ├── arms_trades.zip
 	│   │   │   ├── preproc_arms_import.csv
 	│   │   │   └── prio_weapons_code.txt
+	│   │   ├── output
+	│   │   │   ├── african_countries.json
+	│   │   │   ├── arms_imports.json
+	│   │   │   ├── conflicts.json
+	│   │   │   ├── mil_exp.json
+	│   │   │   ├── mil_pers.json
+	│   │   │   ├── population.json
+	│   │   │   └── predictions.json
+	│   │   ├── owid
+	│   │   │   ├── military-expenditure-as-a-share-of-gdp.csv
+	│   │   │   └── military-personnel-relative-to-total-population.csv
+	│   │   ├── population
+	│   │   │   └── world_population.csv
+	│   │   ├── ucdp
+	│   │   │   ├── resources
+	│   │   │   │   └── ucdp-dyadic-191.pdf
+	│   │   │   └── ucdp-dyadic-191.csv
 	│   │   └── world
 	│   │       ├── african_countries.csv
 	│   │       ├── country_continent.csv
-	│   │       ├── COW country codes.csv
-	│   │       └── world_population.csv
-	│   ├── 1-scraping.ipynb
-	│   └── 2-preprocessing.ipynb
+	│   │       └── COW country codes.csv
+	│   ├── african_countries_dict.ipynb
+	│   ├── nisat-1-scraping.ipynb
+	│   ├── owid-1-milexp.ipynb
+	│   ├── owid-1-milpers.ipynb
+	│   ├── population.ipynb
+	│   ├── regression.ipynb
+	│   └── ucdp-1-preproc.ipynb
 	├── dataviz
 	│   ├── assets
 	│   │   ├── css
@@ -45,16 +65,22 @@ Let's first look at all the files in the repo
 	│   │       ├── leaflet.js
 	│   │       └── localization-en.js
 	│   ├── data
+	│   │   ├── african_countries.json
 	│   │   ├── arms_imports.json
-	│   │   ├── country_continent.csv
-	│   │   ├── cow_codes.json
+	│   │   ├── conflicts.json
+	│   │   ├── mil_exp.json
+	│   │   ├── mil_pers.json
+	│   │   ├── population.json
+	│   │   ├── predictions.json
 	│   │   └── world.json
 	│   ├── scripts
 	│   │   ├── 1-preproc.js
 	│   │   ├── 2-map.js
 	│   │   └── main.js
 	│   └── index.html
-	└── README.md
+	├── README.md
+	└── screenshot.png
+
 
 
 **analysis/** : Contains the notebooks to collect, process, train and predict
@@ -74,9 +100,6 @@ Let's first look at all the files in the repo
 Make sure to cd in analysis/ before launching jupyter notebook. If not, the paths won't work
 
 
-# Potential Future Development
-
-
 # Authors
 
-* **Jean-Romain Roy** - *Co-author: data collection, preprocessing, logistic regression, interactive map* - [jeanromainroy](https://github.com/jeanromainroy)
+* **Jean-Romain Roy** - *Co-author: data collection, preprocessing, logistic regression, random forest, svm, interactive map* - [jeanromainroy](https://github.com/jeanromainroy)
