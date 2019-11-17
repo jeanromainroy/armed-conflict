@@ -54,16 +54,23 @@ function domainX(xScale, dataframe, dateparser){
 	// Get first datum
 	var datum = dataframe[0];
 	
-	// Get it's imports
-	var datumImport = datum['imports'];
+	// Grab all the imports years
+	var importsAllYears = Object.keys(datum['imports']);
+	importsAllYears = importsAllYears.map(function(v){return +v});	// parse to int
 
 	// Grab all the imports years
-	var allYears = Object.keys(datumImport);
-	allYears = allYears.map(function(v){return +v});	// parse to int
+	var conflictsAllYears = Object.keys(datum['conflicts']);
+	conflictsAllYears = conflictsAllYears.map(function(v){return +v});	// parse to int
 
 	// Get the min/max
-	const minYear = Math.min(...allYears);
-	const maxYear = Math.max(...allYears);
+	var importsMinYear = Math.min(...importsAllYears);
+	var importsMaxYear = Math.max(...importsAllYears);
+
+	var conflictsMinYear = Math.min(...conflictsAllYears);
+	var conflictsMaxYear = Math.max(...conflictsAllYears);
+
+	var minYear = Math.max(...[importsMinYear,conflictsMinYear]);
+	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear]);
 
 	// parse to date
 	var min = dateparser(minYear);
@@ -92,26 +99,17 @@ function timeBoundData(dataframe,slider_date){
 	var timebound_data = [];
 	
 	dataframe.forEach(function(country){
-		
-		// Only countries with imports
-		if(country['imports'] == null){
-			return;
-		}
 
 		// Get the selected year
 		var year = slider_date.getFullYear();
 
-		// Only countries with imports for that year
-		if(country['imports'][year] > 0){
-
-			// add datum
-			timebound_data.push({
-				'name':country['name'],
-				'COW':country['COW'],
-				'imports':country['imports'][year],
-				'conflicts':country['conflicts'][year]
-			});
-		}		
+		// add datum
+		timebound_data.push({
+			'name':country['name'],
+			'COW':country['COW'],
+			'imports':country['imports'][year],
+			'conflicts':country['conflicts'][year]
+		});	
 	});
 
 	return timebound_data;

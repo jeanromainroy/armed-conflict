@@ -1,4 +1,4 @@
-# Armed Conflicts: Visualization & Forecasting
+# African Armed Conflicts: Visualization & Forecasting
 
 Predicting Interstate and Internal Conflicts using Small Arms Transfers, Defense Spending, etc. We use a time-series framework to tackle the problem.
 
