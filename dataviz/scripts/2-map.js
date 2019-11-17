@@ -180,6 +180,7 @@ function updateColors(data, color){
 		}else{
 			return "#000";
 		}
+		
 	}).style("stroke-width",function(path){
 
 		// We have null paths for some reasons

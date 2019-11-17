@@ -1,26 +1,13 @@
 "use strict";
 
 /**
- * Order Elements in chronological descending order
- *
- * @param a       First element
- * @param b       Second element
- * 
- */
-function sortByDateDescending(a, b) {
-	return b.created_at - a.created_at;
-}
-
-
-
-/**
  * We create a [id,name] list of all branches and districts
  *
  * @param countriesDict               	Countries with their COW code
  * @param imports               		All the arms imports
  * @param conflicts          			All the conflicts
  */
-function createFromSources(countriesDict, imports, conflicts){
+function createFromSources(countriesDict, imports, conflicts, population){
 
 	var dataframe = [];
 
@@ -33,7 +20,8 @@ function createFromSources(countriesDict, imports, conflicts){
 			'name':countryName,
 			'COW':key,
 			'imports':imports[key],
-			'conflicts':conflicts[key]
+			'conflicts':conflicts[key],
+			'population':population[key]
 		};		
 
 		// Add to dataframe
@@ -53,14 +41,20 @@ function domainX(xScale, dataframe, dateparser){
 
 	// Get first datum
 	var datum = dataframe[0];
+
+	// --- WE NEED TO MAKE SURE THE SHOWN VISUALIZATION AS ALL THE FEATURES FOR THOSE YEARS ---
 	
 	// Grab all the imports years
 	var importsAllYears = Object.keys(datum['imports']);
 	importsAllYears = importsAllYears.map(function(v){return +v});	// parse to int
 
-	// Grab all the imports years
+	// Grab all the conflicts years
 	var conflictsAllYears = Object.keys(datum['conflicts']);
 	conflictsAllYears = conflictsAllYears.map(function(v){return +v});	// parse to int
+
+	// Grab all the population years
+	var populationAllYears = Object.keys(datum['population']);
+	populationAllYears = populationAllYears.map(function(v){return +v});	// parse to int
 
 	// Get the min/max
 	var importsMinYear = Math.min(...importsAllYears);
@@ -69,8 +63,11 @@ function domainX(xScale, dataframe, dateparser){
 	var conflictsMinYear = Math.min(...conflictsAllYears);
 	var conflictsMaxYear = Math.max(...conflictsAllYears);
 
-	var minYear = Math.max(...[importsMinYear,conflictsMinYear]);
-	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear]);
+	var populationMinYear = Math.min(...populationAllYears);
+	var populationMaxYear = Math.max(...populationAllYears);
+
+	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear]);
+	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear]);
 
 	// parse to date
 	var min = dateparser(minYear);
@@ -108,7 +105,8 @@ function timeBoundData(dataframe,slider_date){
 			'name':country['name'],
 			'COW':country['COW'],
 			'imports':country['imports'][year],
-			'conflicts':country['conflicts'][year]
+			'conflicts':country['conflicts'][year],
+			'population':country['population'][year]
 		});	
 	});
 

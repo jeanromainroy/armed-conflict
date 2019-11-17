@@ -6,9 +6,6 @@
 	// created_at parser
 	var dateparser = d3.timeParse("%Y");
 
-	// Continent 
-	var continentFilter = "Africa";
-
 	// Set the center coordinates for world
 	const centerLat = 5.443452;
 	const centerLng = 20.964024;
@@ -55,6 +52,7 @@
 	promises.push(d3.json("data/african_countries.json"));
 	promises.push(d3.json("data/arms_imports.json"));
 	promises.push(d3.json("data/conflicts.json"));
+	promises.push(d3.json("data/population.json"));
 	
 	Promise.all(promises).then(function (results) {
 
@@ -63,6 +61,7 @@
 		var countriesDict = results[1];
 		var imports = results[2];
 		var conflicts = results[3];
+		var population = results[4];
 
 		// Check datasets
 		if(imports == null || imports.length == 0){
@@ -75,9 +74,13 @@
 			return;
 		}
 
+		if(population == null || population.length == 0){
+			console.log("ERROR: Population invalid");
+			return;
+		}
 
 		// Create the dataframe
-		const dataframe = createFromSources(countriesDict, imports, conflicts);
+		const dataframe = createFromSources(countriesDict, imports, conflicts, population);
 		
 
 		// Set the time scale using the data
@@ -181,16 +184,19 @@ function getToolTipText(d, data, localization) {
 	}
 
 	// Total Spending on arms import
-	var total = localization.getFormattedNumber(datum['imports']) + " USD";
+	var arms_imports = localization.getFormattedNumber(datum['imports']) + " USD";
+	var population = localization.getFormattedNumber(datum['population']);
 
 
-	// Style if in conflict
+	// Style RED if in conflict
 	if(datum['conflicts'] == 1){		
-		
-		return "<h2 style='color:#f00'>" + pathName + "</h2><p style='color:#f00'>" + total + "</p>";
-
+		return "<h2 style='color:#f00'>" + pathName + "</h2>" +
+			   "<p style='color:#f00'>Arms Imports: " + arms_imports + "</p>" + 
+			   "<p style='color:#f00'>Population: " + population + "</p>";
 	}else{
-		return "<h2>" + pathName + "</h2><p>" + total + "</p>";
+		return "<h2>" + pathName + "</h2>" +
+			   "<p>Arms Imports: " + arms_imports + "</p>" + 
+			   "<p>Population: " + population + "</p>";
 	}
 }
 
