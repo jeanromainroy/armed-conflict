@@ -4,7 +4,7 @@ Predicting Interstate and Internal Conflicts using Small & Medium Arms Imports, 
 
 ![Screenshot](screenshot.png)
 
-[Link to interactive map](http://jeanromainroy.com/dataviz_election_2016.html)
+[Link to interactive map](http://jeanromainroy.com/dataviz_armed_conflict.html)
 
 # Overview
 
