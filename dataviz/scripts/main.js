@@ -167,18 +167,31 @@
  */
 function getToolTipText(d, data, localization) {
 
+	// Get the path name
+	var pathName = d.properties["name"];
+
+	// Get the corresponding datum
 	var datum = data.filter(function(datum){
 		return datum.name == d.properties.name;
 	})[0];
 
-	var total = "NaN";
-	if(datum != null){
-		total = localization.getFormattedNumber(datum['imports']) + " USD";
+	// If none only return name
+	if(datum == null){
+		return "<h2>" + pathName + "</h2>";
 	}
 
-	var info = "<h2>" + d.properties["name"] + "</h2><p>" + total + "</p>";
+	// Total Spending on arms import
+	var total = localization.getFormattedNumber(datum['imports']) + " USD";
 
-	return info;
+
+	// Style if in conflict
+	if(datum['conflicts'] == 1){		
+		
+		return "<h2 style='color:#f00'>" + pathName + "</h2><p style='color:#f00'>" + total + "</p>";
+
+	}else{
+		return "<h2>" + pathName + "</h2><p>" + total + "</p>";
+	}
 }
 
 /**

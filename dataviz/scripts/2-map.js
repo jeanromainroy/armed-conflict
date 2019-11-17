@@ -150,17 +150,60 @@ function updateColors(data, color){
 			return "#000";
 		}
 
-		// Check if there is a conflict
-		if(datum['conflicts'] == 1){
-			return "#f00";
-		}
-
 		// Compute pro GOP tweet percentage
 		var intensity = datum['imports']/total;
 		
 		// Return scaled color
 		return color(intensity);
-	});
+
+
+	}).style("stroke",function(path){
+
+		// We have null paths for some reasons
+		if(path == null){
+			return;
+		}
+
+		// Get tweet data for the state
+		var datum = data.filter(function(d){
+			return d.name == path.properties.name;
+		})[0];
+
+		// If this path is not part of the filtered data, return black
+		if(datum == null){
+			return "#000";
+		}
+
+		// Check if there is a conflict
+		if(datum['conflicts'] == 1){
+			return "#f00";
+		}else{
+			return "#000";
+		}
+	}).style("stroke-width",function(path){
+
+		// We have null paths for some reasons
+		if(path == null){
+			return;
+		}
+
+		// Get tweet data for the state
+		var datum = data.filter(function(d){
+			return d.name == path.properties.name;
+		})[0];
+
+		// If this path is not part of the filtered data, return black
+		if(datum == null){
+			return "1px";
+		}
+
+		// Check if there is a conflict
+		if(datum['conflicts'] == 1){
+			return "6px";
+		}else{
+			return "1px";
+		}
+	})
 }
 
 
