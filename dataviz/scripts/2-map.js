@@ -204,7 +204,7 @@ function updateColors(data, color){
 		}else{
 			return "1px";
 		}
-	})
+	});
 }
 
 

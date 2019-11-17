@@ -7,7 +7,7 @@
  * @param imports               		All the arms imports
  * @param conflicts          			All the conflicts
  */
-function createFromSources(countriesDict, imports, conflicts, population){
+function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers){
 
 	var dataframe = [];
 
@@ -21,7 +21,9 @@ function createFromSources(countriesDict, imports, conflicts, population){
 			'COW':key,
 			'imports':imports[key],
 			'conflicts':conflicts[key],
-			'population':population[key]
+			'population':population[key],
+			'mil_exp':mil_exp[key],
+			'mil_pers':mil_pers[key]
 		};		
 
 		// Add to dataframe
@@ -56,6 +58,14 @@ function domainX(xScale, dataframe, dateparser){
 	var populationAllYears = Object.keys(datum['population']);
 	populationAllYears = populationAllYears.map(function(v){return +v});	// parse to int
 
+	// Grab all the population years
+	var milexpAllYears = Object.keys(datum['mil_exp']);
+	milexpAllYears = milexpAllYears.map(function(v){return +v});	// parse to float
+
+	// Grab all the population years
+	var milpersAllYears = Object.keys(datum['mil_pers']);
+	milpersAllYears = milpersAllYears.map(function(v){return +v});	// parse to float
+
 	// Get the min/max
 	var importsMinYear = Math.min(...importsAllYears);
 	var importsMaxYear = Math.max(...importsAllYears);
@@ -66,8 +76,14 @@ function domainX(xScale, dataframe, dateparser){
 	var populationMinYear = Math.min(...populationAllYears);
 	var populationMaxYear = Math.max(...populationAllYears);
 
-	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear]);
-	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear]);
+	var milexpMinYear = Math.min(...milexpAllYears);
+	var milexpMaxYear = Math.max(...milexpAllYears);
+
+	var milpersMinYear = Math.min(...milpersAllYears);
+	var milpersMaxYear = Math.max(...milpersAllYears);
+
+	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear,milexpMinYear,milpersMinYear]);
+	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear,milexpMaxYear,milpersMaxYear]);
 
 	// parse to date
 	var min = dateparser(minYear);
@@ -106,7 +122,9 @@ function timeBoundData(dataframe,slider_date){
 			'COW':country['COW'],
 			'imports':country['imports'][year],
 			'conflicts':country['conflicts'][year],
-			'population':country['population'][year]
+			'population':country['population'][year],
+			'mil_exp':country['mil_exp'][year],
+			'mil_pers':country['mil_pers'][year]
 		});	
 	});
 

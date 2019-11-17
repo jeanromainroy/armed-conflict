@@ -53,6 +53,9 @@
 	promises.push(d3.json("data/arms_imports.json"));
 	promises.push(d3.json("data/conflicts.json"));
 	promises.push(d3.json("data/population.json"));
+
+	promises.push(d3.json("data/mil_exp.json"));
+	promises.push(d3.json("data/mil_pers.json"));
 	
 	Promise.all(promises).then(function (results) {
 
@@ -62,25 +65,33 @@
 		var imports = results[2];
 		var conflicts = results[3];
 		var population = results[4];
+		var mil_exp = results[5];
+		var mil_pers = results[6];
 
 		// Check datasets
 		if(imports == null || imports.length == 0){
 			console.log("ERROR: Arms Imports invalid");
 			return;
 		}
-
 		if(conflicts == null || conflicts.length == 0){
 			console.log("ERROR: Conflicts invalid");
 			return;
 		}
-
 		if(population == null || population.length == 0){
 			console.log("ERROR: Population invalid");
 			return;
 		}
+		if(mil_exp == null || mil_exp.length == 0){
+			console.log("ERROR: Military Expenditures invalid");
+			return;
+		}
+		if(mil_pers == null || mil_pers.length == 0){
+			console.log("ERROR: Military Personel invalid");
+			return;
+		}
 
 		// Create the dataframe
-		const dataframe = createFromSources(countriesDict, imports, conflicts, population);
+		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers);
 		
 
 		// Set the time scale using the data
@@ -184,20 +195,30 @@ function getToolTipText(d, data, localization) {
 	}
 
 	// Total Spending on arms import
-	var arms_imports = localization.getFormattedNumber(datum['imports']) + " USD";
-	var population = localization.getFormattedNumber(datum['population']);
-
+	var arms_imports = (datum['imports'] == 0) ? "NaN" : localization.getFormattedNumber(datum['imports']) + " USD";
+	var population = (datum['population'] == 0) ? "NaN" : localization.getFormattedNumber(datum['population']);
+	var mil_exp = (datum['mil_exp'] == 0.0) ? "NaN" : round(datum['mil_exp'],4) + "%";
+	var mil_pers = (datum['mil_pers'] == 0.0) ? "NaN" : round(datum['mil_pers'],4) + "%";
 
 	// Style RED if in conflict
 	if(datum['conflicts'] == 1){		
 		return "<h2 style='color:#f00'>" + pathName + "</h2>" +
 			   "<p style='color:#f00'>Arms Imports: " + arms_imports + "</p>" + 
-			   "<p style='color:#f00'>Population: " + population + "</p>";
+			   "<p style='color:#f00'>Population: " + population + "</p>" + 
+			   "<p style='color:#f00'>Mil. Expenditure: " + mil_exp + "</p>" + 
+			   "<p style='color:#f00'>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}else{
 		return "<h2>" + pathName + "</h2>" +
 			   "<p>Arms Imports: " + arms_imports + "</p>" + 
-			   "<p>Population: " + population + "</p>";
+			   "<p>Population: " + population + "</p>" +
+			   "<p>Mil. Expenditure: " + mil_exp + "</p>" + 
+			   "<p>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}
+}
+
+// Rounds to n decimal
+function round(x, n) {
+	return Math.round(x * Math.pow(10, n)) / Math.pow(10, n)
 }
 
 /**
