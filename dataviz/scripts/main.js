@@ -52,66 +52,33 @@
 	/***** Loading the data *****/
 	var promises = [];
 	promises.push(d3.json("data/world.json"));
-	promises.push(d3.json("data/cow_codes.json"));
+	promises.push(d3.json("data/african_countries.json"));
 	promises.push(d3.json("data/arms_imports.json"));
-	promises.push(d3.csv("data/country_continent.csv"));
+	promises.push(d3.json("data/conflicts.json"));
 	
 	Promise.all(promises).then(function (results) {
 
 		/***** Load the data *****/
 		var world = results[0];
-		var COWcodes = results[1];
+		var countriesDict = results[1];
 		var imports = results[2];
-		var countries_continents = results[3];
+		var conflicts = results[3];
 
-		// Check
+		// Check datasets
 		if(imports == null || imports.length == 0){
-			console.log("ERROR: Imports invalid")
+			console.log("ERROR: Arms Imports invalid");
 			return;
 		}
 
-		// Get countries data from geojson
-		var countries = [];
-		world.features.forEach(function(country){
-			
-			var datum = {
-				"id":country.id,
-				"name": localization.capitalize(country.properties.name)
-			};
+		if(conflicts == null || conflicts.length == 0){
+			console.log("ERROR: Conflicts invalid");
+			return;
+		}
 
-			// Try to add the COW codes
-			Object.keys(COWcodes).forEach(function(code){
-
-				var name = COWcodes[code]['name'];
-
-				if(datum['name'].toLowerCase() == name.toLowerCase()){
-					datum["COW"] = code;
-				}
-			});
-
-			// Try to add the continent
-			countries_continents.forEach(function(country_continent){
-
-				var continent = country_continent['Continent'];
-				var country2 = country_continent['Country'];
-
-				if(datum['name'].toLowerCase() == country2.toLowerCase()){
-					datum['continent'] = continent;
-				}
-			});
-
-
-			// Add to array
-			countries.push(datum);
-		});
 
 		// Create the dataframe
-		var all_dataframe = createFromSources(imports,countries);
+		const dataframe = createFromSources(countriesDict, imports, conflicts);
 		
-		// Filter by continent
-		const dataframe = all_dataframe.filter(function(country){
-			return country['continent'] == continentFilter;	
-		});
 
 		// Set the time scale using the data
 		domainX(timelineScale,dataframe,dateparser);
@@ -201,12 +168,12 @@
 function getToolTipText(d, data, localization) {
 
 	var datum = data.filter(function(datum){
-		return datum.id == d.id;
+		return datum.name == d.properties.name;
 	})[0];
 
 	var total = "NaN";
 	if(datum != null){
-		total = localization.getFormattedNumber(datum.total) + " USD";
+		total = localization.getFormattedNumber(datum['imports']) + " USD";
 	}
 
 	var info = "<h2>" + d.properties["name"] + "</h2><p>" + total + "</p>";
@@ -286,6 +253,28 @@ function slider_select(slider){
 
 function slider_deselect(slider){
 	slider.style("opacity","1.0");
+}
+
+
+// DEBUG: Make sure all the african countries in the dict fit the names of the geo features
+function checkIfAllFeatures(countriesDict, world){
+
+	Object.keys(countriesDict).forEach(function(key){
+
+		var dictCountryName = countriesDict[key]['name'];
+
+		var found = false;
+
+		world.features.forEach(function(country){
+			if(country.properties.name.toLowerCase() == dictCountryName.toLowerCase()){
+				found = true;
+			}	
+		});
+
+		if(found == false){
+			console.log("NOT FOUND: " + dictCountryName);
+		}
+	});
 }
 
 

@@ -16,28 +16,24 @@ function sortByDateDescending(a, b) {
 /**
  * We create a [id,name] list of all branches and districts
  *
- * @param imports               	Raw Data
- * @param countries               	The geo features
- * @param dateparser          	Converts string to date
+ * @param countriesDict               	Countries with their COW code
+ * @param imports               		All the arms imports
+ * @param conflicts          			All the conflicts
  */
-function createFromSources(imports, countries){
+function createFromSources(countriesDict, imports, conflicts){
 
 	var dataframe = [];
 
-	countries.forEach(function(country){
+	Object.keys(countriesDict).forEach(function(key){
 
-		// Check if we have the COW code
-		if(country['COW'] == null){
-			return;
-		}
+		var countryName = countriesDict[key]['name'];
 
 		// Create entry
 		var datum = {
-			'id':country['id'],
-			'name':country['name'],
-			'continent':country['continent'],
-			'COW':country['COW'],
-			'imports':imports[country['COW']]
+			'name':countryName,
+			'COW':key,
+			'imports':imports[key],
+			'conflicts':conflicts[key]
 		};		
 
 		// Add to dataframe
@@ -107,12 +103,13 @@ function timeBoundData(dataframe,slider_date){
 
 		// Only countries with imports for that year
 		if(country['imports'][year] > 0){
+
+			// add datum
 			timebound_data.push({
-				'id': country['id'],
 				'name':country['name'],
-				'continent':country['continent'],
 				'COW':country['COW'],
-				'total': country['imports'][year]
+				'imports':country['imports'][year],
+				'conflicts':country['conflicts'][year]
 			});
 		}		
 	});

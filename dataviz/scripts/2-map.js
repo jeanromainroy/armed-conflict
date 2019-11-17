@@ -129,7 +129,7 @@ function updateColors(data, color){
 	// Get total for all countries
 	var total = 0;
 	data.forEach(function(datum){
-		total += datum['total'];
+		total += datum['imports'];
 	})
 
 	// Fill the circles with their new color
@@ -140,12 +140,9 @@ function updateColors(data, color){
 			return;
 		}
 
-		// Get data
-		var id = path.id;
-
 		// Get tweet data for the state
 		var datum = data.filter(function(d){
-			return d.id == id;
+			return d.name == path.properties.name;
 		})[0];
 
 		// If this path is not part of the filtered data, return black
@@ -153,8 +150,13 @@ function updateColors(data, color){
 			return "#000";
 		}
 
+		// Check if there is a conflict
+		if(datum['conflicts'] == 1){
+			return "#f00";
+		}
+
 		// Compute pro GOP tweet percentage
-		var intensity = datum.total/total;
+		var intensity = datum['imports']/total;
 		
 		// Return scaled color
 		return color(intensity);
