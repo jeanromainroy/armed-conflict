@@ -1,6 +1,6 @@
-# Civil Wars: Visualization & Forecasting
+# Armed Conflicts: Visualization & Forecasting
 
-Predicting Intra-State Conflicts using Small Arms Transfers, Defense Spending, etc. We use a time-series framework to tackle the problem. 
+Predicting Interstate and Internal Conflicts using Small Arms Transfers, Defense Spending, etc. We use a time-series framework to tackle the problem.
 
 [Link to interactive map](http://jeanromainroy.com/dataviz_election_2016.html)
 
