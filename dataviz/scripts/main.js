@@ -31,7 +31,7 @@
 
 
 	// Init the color scale
-	var color = d3.scaleSqrt();
+	var color = d3.scaleLinear();
 	color.domain([0.0, 1.0]).range(["#fff", '#800000']).interpolate(d3.interpolate);
 
 
