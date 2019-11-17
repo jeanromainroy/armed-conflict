@@ -7,7 +7,7 @@
  * @param imports               		All the arms imports
  * @param conflicts          			All the conflicts
  */
-function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers){
+function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, predictions){
 
 	var dataframe = [];
 
@@ -23,7 +23,8 @@ function createFromSources(countriesDict, imports, conflicts, population, mil_ex
 			'conflicts':conflicts[key],
 			'population':population[key],
 			'mil_exp':mil_exp[key],
-			'mil_pers':mil_pers[key]
+			'mil_pers':mil_pers[key],
+			'predictions':predictions[key]
 		};		
 
 		// Add to dataframe
@@ -66,6 +67,10 @@ function domainX(xScale, dataframe, dateparser){
 	var milpersAllYears = Object.keys(datum['mil_pers']);
 	milpersAllYears = milpersAllYears.map(function(v){return +v});	// parse to float
 
+	// Grab all the population years
+	var predictionsAllYears = Object.keys(datum['predictions']);
+	predictionsAllYears = predictionsAllYears.map(function(v){return +v});	// parse to float
+
 	// Get the min/max
 	var importsMinYear = Math.min(...importsAllYears);
 	var importsMaxYear = Math.max(...importsAllYears);
@@ -82,8 +87,11 @@ function domainX(xScale, dataframe, dateparser){
 	var milpersMinYear = Math.min(...milpersAllYears);
 	var milpersMaxYear = Math.max(...milpersAllYears);
 
-	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear,milexpMinYear,milpersMinYear]);
-	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear,milexpMaxYear,milpersMaxYear]);
+	var predictionsMinYear = Math.min(...predictionsAllYears);
+	var predictionsMaxYear = Math.max(...predictionsAllYears);
+
+	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear,milexpMinYear,milpersMinYear,predictionsMinYear]);
+	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear,milexpMaxYear,milpersMaxYear,predictionsMaxYear]);
 
 	// parse to date
 	var min = dateparser(minYear);
@@ -124,7 +132,8 @@ function timeBoundData(dataframe,slider_date){
 			'conflicts':country['conflicts'][year],
 			'population':country['population'][year],
 			'mil_exp':country['mil_exp'][year],
-			'mil_pers':country['mil_pers'][year]
+			'mil_pers':country['mil_pers'][year],
+			'predictions':country['predictions'][year]
 		});	
 	});
 

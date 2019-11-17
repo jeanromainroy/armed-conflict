@@ -32,7 +32,7 @@
 
 	// Init the color scale
 	var color = d3.scaleSqrt();
-	color.domain([0.0, 1.0]).range(["#fff", '#5b92e5']).interpolate(d3.interpolate);
+	color.domain([0.0, 1.0]).range(["#fff", '#800000']).interpolate(d3.interpolate);
 
 
 	// Scales
@@ -53,9 +53,9 @@
 	promises.push(d3.json("data/arms_imports.json"));
 	promises.push(d3.json("data/conflicts.json"));
 	promises.push(d3.json("data/population.json"));
-
 	promises.push(d3.json("data/mil_exp.json"));
 	promises.push(d3.json("data/mil_pers.json"));
+	promises.push(d3.json("data/predictions.json"));
 	
 	Promise.all(promises).then(function (results) {
 
@@ -67,6 +67,7 @@
 		var population = results[4];
 		var mil_exp = results[5];
 		var mil_pers = results[6];
+		var predictions = results[7];
 
 		// Check datasets
 		if(imports == null || imports.length == 0){
@@ -89,9 +90,13 @@
 			console.log("ERROR: Military Personel invalid");
 			return;
 		}
+		if(predictions == null || predictions.length == 0){
+			console.log("ERROR: Predictions invalid");
+			return;
+		}
 
 		// Create the dataframe
-		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers);
+		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, predictions);
 		
 
 		// Set the time scale using the data
@@ -203,12 +208,14 @@ function getToolTipText(d, data, localization) {
 	// Style RED if in conflict
 	if(datum['conflicts'] == 1){		
 		return "<h2 style='color:#f00'>" + pathName + "</h2>" +
+			   "<p style='color:#f00'>Prob. Conflict: " + datum['predictions'] + "</p>" + 
 			   "<p style='color:#f00'>Arms Imports: " + arms_imports + "</p>" + 
 			   "<p style='color:#f00'>Population: " + population + "</p>" + 
 			   "<p style='color:#f00'>Mil. Expenditure: " + mil_exp + "</p>" + 
 			   "<p style='color:#f00'>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}else{
 		return "<h2>" + pathName + "</h2>" +
+			   "<p>Prob. Conflict: " + datum['predictions'] + "</p>" + 
 			   "<p>Arms Imports: " + arms_imports + "</p>" + 
 			   "<p>Population: " + population + "</p>" +
 			   "<p>Mil. Expenditure: " + mil_exp + "</p>" + 

@@ -126,12 +126,6 @@ function createStates(g, path, world, tip) {
  */
 function updateColors(data, color){
 
-	// Get total for all countries
-	var total = 0;
-	data.forEach(function(datum){
-		total += datum['imports'];
-	})
-
 	// Fill the circles with their new color
 	d3.selectAll("path").style("fill", function(path){
 
@@ -149,12 +143,9 @@ function updateColors(data, color){
 		if(datum == null){
 			return "#000";
 		}
-
-		// Compute pro GOP tweet percentage
-		var intensity = datum['imports']/total;
 		
 		// Return scaled color
-		return color(intensity);
+		return color(+datum['predictions']);
 
 
 	}).style("stroke",function(path){

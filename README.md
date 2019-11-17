@@ -66,6 +66,8 @@ Let's first look at all the files in the repo
 
 - [Norwegian Initiative on Small Arms Transfers](http://nisat.prio.org/Trade-Database/Researchers-Database/)
 - [Uppsala Conflict Data Program](https://ucdp.uu.se/downloads/)
+- [Our World in Data](https://ourworldindata.org/military-spending#data-sources)
+- [The World Bank](https://data.worldbank.org/indicator/sp.pop.totl)
 
 # Launching jupyter notebook
 
