@@ -6,6 +6,12 @@ Predicting Interstate and Internal Conflicts using Small & Medium Arms Imports, 
 
 [Link to interactive map](http://jeanromainroy.com/dataviz_armed_conflict.html)
 
+# Model
+
+Bagged Random Forest (0.9) and Neural Network (0.1)
+
+
+
 # Overview
 
 Let's first look at all the files in the repo

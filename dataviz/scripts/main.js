@@ -31,7 +31,7 @@
 
 
 	// Init the color scale
-	var color = d3.scaleLinear();
+	var color = d3.scalePow();
 	color.domain([0.0, 1.0]).range(["#fff", '#800000']).interpolate(d3.interpolate);
 
 
@@ -55,6 +55,8 @@
 	promises.push(d3.json("data/population.json"));
 	promises.push(d3.json("data/mil_exp.json"));
 	promises.push(d3.json("data/mil_pers.json"));
+	promises.push(d3.json("data/water.json"));
+	promises.push(d3.json("data/surface.json"));
 	promises.push(d3.json("data/predictions.json"));
 	
 	Promise.all(promises).then(function (results) {
@@ -67,36 +69,18 @@
 		var population = results[4];
 		var mil_exp = results[5];
 		var mil_pers = results[6];
-		var predictions = results[7];
+		var water = results[7];
+		var surface = results[8];
+		var predictions = results[9];
 
 		// Check datasets
-		if(imports == null || imports.length == 0){
-			console.log("ERROR: Arms Imports invalid");
-			return;
-		}
-		if(conflicts == null || conflicts.length == 0){
-			console.log("ERROR: Conflicts invalid");
-			return;
-		}
-		if(population == null || population.length == 0){
-			console.log("ERROR: Population invalid");
-			return;
-		}
-		if(mil_exp == null || mil_exp.length == 0){
-			console.log("ERROR: Military Expenditures invalid");
-			return;
-		}
-		if(mil_pers == null || mil_pers.length == 0){
-			console.log("ERROR: Military Personel invalid");
-			return;
-		}
 		if(predictions == null || predictions.length == 0){
 			console.log("ERROR: Predictions invalid");
 			return;
 		}
 
 		// Create the dataframe
-		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, predictions);
+		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, predictions);
 		
 
 		// Set the time scale using the data
@@ -204,21 +188,29 @@ function getToolTipText(d, data, localization) {
 	var population = (datum['population'] == 0) ? "NaN" : localization.getFormattedNumber(datum['population']);
 	var mil_exp = (datum['mil_exp'] == 0.0) ? "NaN" : round(datum['mil_exp'],4) + "%";
 	var mil_pers = (datum['mil_pers'] == 0.0) ? "NaN" : round(datum['mil_pers'],4) + "%";
+	var water = (datum['water'] == 0.0) ? "NaN" : localization.getFormattedNumber(datum['water']) + " m3";
+	var surface = (datum['surface'] == 0.0) ? "NaN" : localization.getFormattedNumber(datum['surface']) + " km2";
+
+	var prediction = round(100.0*datum['predictions'],2) + "%";
 
 	// Style RED if in conflict
 	if(datum['conflicts'] == 1){		
 		return "<h2 style='color:#f00'>" + pathName + "</h2>" +
-			   "<p style='color:#f00'>Prob. Conflict: " + datum['predictions'] + "</p>" + 
+			   "<p style='color:#f00'>Prob. Conflict: " + prediction + "</p>" + 
 			   "<p style='color:#f00'>Arms Imports: " + arms_imports + "</p>" + 
 			   "<p style='color:#f00'>Population: " + population + "</p>" + 
 			   "<p style='color:#f00'>Mil. Expenditure: " + mil_exp + "</p>" + 
+			   "<p style='color:#f00'>Freshwater per Cap.: " + water + "</p>" + 
+			   "<p style='color:#f00'>Surface Area: " + surface + "</p>" + 
 			   "<p style='color:#f00'>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}else{
 		return "<h2>" + pathName + "</h2>" +
-			   "<p>Prob. Conflict: " + datum['predictions'] + "</p>" + 
+			   "<p>Prob. Conflict: " + prediction + "</p>" + 
 			   "<p>Arms Imports: " + arms_imports + "</p>" + 
 			   "<p>Population: " + population + "</p>" +
 			   "<p>Mil. Expenditure: " + mil_exp + "</p>" + 
+			   "<p>Freshwater per Cap.: " + water + "</p>" + 
+			   "<p>Surface Area: " + surface + "</p>" + 
 			   "<p>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}
 }

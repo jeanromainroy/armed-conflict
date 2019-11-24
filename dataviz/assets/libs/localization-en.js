@@ -73,7 +73,7 @@ var localization = (function(d3) {
    */
   self.getFormattedNumber = function(number) {
     if (number % 1 !== 0) {
-      number = number.toFixed(2).replace('.', ',')
+      number = Number.parseFloat(number).toFixed(2).replace('.', ',')
     }
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };

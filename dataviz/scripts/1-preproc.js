@@ -7,7 +7,7 @@
  * @param imports               		All the arms imports
  * @param conflicts          			All the conflicts
  */
-function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, predictions){
+function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, predictions){
 
 	var dataframe = [];
 
@@ -24,6 +24,8 @@ function createFromSources(countriesDict, imports, conflicts, population, mil_ex
 			'population':population[key],
 			'mil_exp':mil_exp[key],
 			'mil_pers':mil_pers[key],
+			'water': water[key],
+			'surface': surface[key],
 			'predictions':predictions[key]
 		};		
 
@@ -45,53 +47,13 @@ function domainX(xScale, dataframe, dateparser){
 	// Get first datum
 	var datum = dataframe[0];
 
-	// --- WE NEED TO MAKE SURE THE SHOWN VISUALIZATION AS ALL THE FEATURES FOR THOSE YEARS ---
-	
-	// Grab all the imports years
-	var importsAllYears = Object.keys(datum['imports']);
-	importsAllYears = importsAllYears.map(function(v){return +v});	// parse to int
-
-	// Grab all the conflicts years
-	var conflictsAllYears = Object.keys(datum['conflicts']);
-	conflictsAllYears = conflictsAllYears.map(function(v){return +v});	// parse to int
-
-	// Grab all the population years
-	var populationAllYears = Object.keys(datum['population']);
-	populationAllYears = populationAllYears.map(function(v){return +v});	// parse to int
-
-	// Grab all the population years
-	var milexpAllYears = Object.keys(datum['mil_exp']);
-	milexpAllYears = milexpAllYears.map(function(v){return +v});	// parse to float
-
-	// Grab all the population years
-	var milpersAllYears = Object.keys(datum['mil_pers']);
-	milpersAllYears = milpersAllYears.map(function(v){return +v});	// parse to float
-
-	// Grab all the population years
+	// Grab all the predictions years
 	var predictionsAllYears = Object.keys(datum['predictions']);
 	predictionsAllYears = predictionsAllYears.map(function(v){return +v});	// parse to float
 
 	// Get the min/max
-	var importsMinYear = Math.min(...importsAllYears);
-	var importsMaxYear = Math.max(...importsAllYears);
-
-	var conflictsMinYear = Math.min(...conflictsAllYears);
-	var conflictsMaxYear = Math.max(...conflictsAllYears);
-
-	var populationMinYear = Math.min(...populationAllYears);
-	var populationMaxYear = Math.max(...populationAllYears);
-
-	var milexpMinYear = Math.min(...milexpAllYears);
-	var milexpMaxYear = Math.max(...milexpAllYears);
-
-	var milpersMinYear = Math.min(...milpersAllYears);
-	var milpersMaxYear = Math.max(...milpersAllYears);
-
-	var predictionsMinYear = Math.min(...predictionsAllYears);
-	var predictionsMaxYear = Math.max(...predictionsAllYears);
-
-	var minYear = Math.max(...[importsMinYear,conflictsMinYear,populationMinYear,milexpMinYear,milpersMinYear,predictionsMinYear]);
-	var maxYear = Math.min(...[importsMaxYear,conflictsMaxYear,populationMaxYear,milexpMaxYear,milpersMaxYear,predictionsMaxYear]);
+	var minYear = Math.min(...predictionsAllYears);
+	var maxYear = Math.max(...predictionsAllYears);
 
 	// parse to date
 	var min = dateparser(minYear);
@@ -133,6 +95,8 @@ function timeBoundData(dataframe,slider_date){
 			'population':country['population'][year],
 			'mil_exp':country['mil_exp'][year],
 			'mil_pers':country['mil_pers'][year],
+			'water':country['water'][year],
+			'surface':country['surface'][year],
 			'predictions':country['predictions'][year]
 		});	
 	});
