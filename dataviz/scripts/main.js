@@ -57,6 +57,7 @@
 	promises.push(d3.json("data/mil_pers.json"));
 	promises.push(d3.json("data/water.json"));
 	promises.push(d3.json("data/surface.json"));
+	promises.push(d3.json("data/gdp.json"));
 	promises.push(d3.json("data/predictions.json"));
 	
 	Promise.all(promises).then(function (results) {
@@ -71,7 +72,8 @@
 		var mil_pers = results[6];
 		var water = results[7];
 		var surface = results[8];
-		var predictions = results[9];
+		var gdp = results[9];
+		var predictions = results[10];
 
 		// Check datasets
 		if(predictions == null || predictions.length == 0){
@@ -80,7 +82,7 @@
 		}
 
 		// Create the dataframe
-		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, predictions);
+		const dataframe = createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, gdp, predictions);
 		
 
 		// Set the time scale using the data
@@ -190,6 +192,7 @@ function getToolTipText(d, data, localization) {
 	var mil_pers = (datum['mil_pers'] == 0.0) ? "NaN" : round(datum['mil_pers'],4) + "%";
 	var water = (datum['water'] == 0.0) ? "NaN" : localization.getFormattedNumber(datum['water']) + " m3";
 	var surface = (datum['surface'] == 0.0) ? "NaN" : localization.getFormattedNumber(datum['surface']) + " km2";
+	var gdp = (datum['GDP'] == 0.0) ? "NaN" : localization.getFormattedNumber(datum['GDP']) + " USD";
 
 	var prediction = round(100.0*datum['predictions'],2) + "%";
 
@@ -202,6 +205,7 @@ function getToolTipText(d, data, localization) {
 			   "<p style='color:#f00'>Mil. Expenditure: " + mil_exp + "</p>" + 
 			   "<p style='color:#f00'>Freshwater per Cap.: " + water + "</p>" + 
 			   "<p style='color:#f00'>Surface Area: " + surface + "</p>" + 
+			   "<p style='color:#f00'>GDP: " + gdp + "</p>" + 
 			   "<p style='color:#f00'>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}else{
 		return "<h2>" + pathName + "</h2>" +
@@ -211,6 +215,7 @@ function getToolTipText(d, data, localization) {
 			   "<p>Mil. Expenditure: " + mil_exp + "</p>" + 
 			   "<p>Freshwater per Cap.: " + water + "</p>" + 
 			   "<p>Surface Area: " + surface + "</p>" + 
+			   "<p>GDP: " + gdp + "</p>" + 
 			   "<p>Frac. Pop. in Army: " + mil_pers + "</p>";
 	}
 }

@@ -7,7 +7,7 @@
  * @param imports               		All the arms imports
  * @param conflicts          			All the conflicts
  */
-function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, predictions){
+function createFromSources(countriesDict, imports, conflicts, population, mil_exp, mil_pers, water, surface, gdp, predictions){
 
 	var dataframe = [];
 
@@ -26,6 +26,7 @@ function createFromSources(countriesDict, imports, conflicts, population, mil_ex
 			'mil_pers':mil_pers[key],
 			'water': water[key],
 			'surface': surface[key],
+			'GDP':gdp[key],
 			'predictions':predictions[key]
 		};		
 
@@ -97,6 +98,7 @@ function timeBoundData(dataframe,slider_date){
 			'mil_pers':country['mil_pers'][year],
 			'water':country['water'][year],
 			'surface':country['surface'][year],
+			'GDP':country['GDP'][year],
 			'predictions':country['predictions'][year]
 		});	
 	});
