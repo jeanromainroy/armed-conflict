@@ -1,6 +1,6 @@
 # African Armed Conflicts: Visualization & Forecasting
 
-Predicting Interstate and Internal Conflicts using Small & Medium Arms Imports, Military Expenditures, Fraction of Population in the Army, etc. We use a time-series framework to tackle the problem.
+Visualizing Interstate and Internal Conflicts using Small & Medium Arms Imports, Military Expenditures, Fraction of Population in the Army, etc. We use a time-series framework to tackle the problem.
 
 ![Screenshot](screenshot.png)
 
